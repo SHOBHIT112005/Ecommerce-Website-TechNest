@@ -5,8 +5,9 @@ import User from "@/models/User";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { applyRateLimit } from "@/lib/rateLimit";
+import Stripe from "stripe";
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const DELIVERY_FEE = 5;
 export default async function handler(req,res) {
     try {

@@ -67,7 +67,14 @@ export default function Header() {
                 {userLabel}
               </span>
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => {
+                  // Clear user-specific cart before signing out
+                  const userEmail = session?.user?.email;
+                  if (userEmail) {
+                    localStorage.removeItem(`cart_${userEmail}`);
+                  }
+                  signOut({ callbackUrl: "/" });
+                }}
                 className="text-sm font-semibold bg-gray-100 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300"
               >
                 Sign Out

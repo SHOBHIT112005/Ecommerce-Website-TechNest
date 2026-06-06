@@ -137,55 +137,58 @@ export default function Checkout () {
                     Some items in your cart are no longer available.
                 </div>
             )}
-            <form action="/api/checkout" method="POST">
-            <div>
-                <input name="address" value={address} onChange={e => setAddress(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="Street address, number"/>
 
-                <input name="city" value={city} onChange={e => setCity(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="City and postal code"/>
+            {!loading && !fetchError && selectedProducts.length > 0 && (
+              <form action="/api/checkout" method="POST" className="mt-4">
+                <div>
+                  <input name="address" value={address} onChange={e => setAddress(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="Street address, number"/>
 
-                <input name="name" value={name} onChange={e => setName(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="Name"/>
+                  <input name="city" value={city} onChange={e => setCity(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="City and postal code"/>
 
-                <input name="email" value={email} onChange={e => setEmail(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="Email address"/>
-            </div>
+                  <input name="name" value={name} onChange={e => setName(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="Name"/>
 
-            <div className="mt-8">
-            <div className="flex my-3">
-                <h3 className="grow font-bold text-gray-400">Subtotal:</h3>
-                <h3 className="font-bold">${subtotal}</h3>
-            </div>
+                  <input name="email" value={email} onChange={e => setEmail(e.target.value)} className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-emerald-300" type="text" placeholder="Email address"/>
+                </div>
 
-            <div className="flex my-3">
-                <h3 className="grow font-bold text-gray-400">Delivery:</h3>
-                <h3 className="font-bold">${deliveryPrice}</h3>
-            </div>
+                <div className="mt-8">
+                  <div className="flex my-3">
+                    <h3 className="grow font-bold text-gray-400">Subtotal:</h3>
+                    <h3 className="font-bold">${subtotal}</h3>
+                  </div>
 
-            <div className="flex my-3 border-t pt-3 border-dashed border-emerald-500">
-                <h3 className="grow font-bold text-gray-400">Total:</h3>
-                <h3 className="font-bold">${total}</h3>
-            </div>
-        </div>
-        <input type="hidden" name="products" value={selectedProducts.join(',')}/>
+                  <div className="flex my-3">
+                    <h3 className="grow font-bold text-gray-400">Delivery:</h3>
+                    <h3 className="font-bold">${deliveryPrice}</h3>
+                  </div>
 
-        <button
-          type="button"
-          onClick={() => setShowConfirm(true)}
-          className="bg-emerald-500 px-5 py-2 rounded-xl font-bold text-white w-full my-4 shadow-emerald-300 shadow-lg hover:bg-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-300"
-        >
-          Pay ${total}
-        </button>
+                  <div className="flex my-3 border-t pt-3 border-dashed border-emerald-500">
+                    <h3 className="grow font-bold text-gray-400">Total:</h3>
+                    <h3 className="font-bold">${total}</h3>
+                  </div>
+                </div>
+                <input type="hidden" name="products" value={selectedProducts.join(',')}/>
 
-        <ConfirmOverlay
-          visible={showConfirm}
-          total={total}
-          onConfirm={() => {
-            setShowConfirm(false);
-            // Submit the form programmatically
-            const form = document.querySelector('form');
-            form?.requestSubmit();
-          }}
-          onCancel={() => setShowConfirm(false)}
-        />
-        </form>
-        </Layout>
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(true)}
+                  className="bg-emerald-500 px-5 py-2 rounded-xl font-bold text-white w-full my-4 shadow-emerald-300 shadow-lg hover:bg-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                >
+                  Pay ${total}
+                </button>
+              </form>
+            )}
+
+            <ConfirmOverlay
+              visible={showConfirm}
+              total={total}
+              onConfirm={() => {
+                setShowConfirm(false);
+                // Submit the form programmatically
+                const form = document.querySelector('form');
+                form?.requestSubmit();
+              }}
+              onCancel={() => setShowConfirm(false)}
+            />
+    </Layout>
     )
 }

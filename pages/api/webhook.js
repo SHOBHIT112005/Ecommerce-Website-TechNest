@@ -1,8 +1,10 @@
 import { initMongoose } from "@/lib/mongoose";
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+import Stripe from "stripe";
 import { buffer } from 'micro';
 import Order from '@/models/Order';
 import User from "@/models/User";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
     await initMongoose();
