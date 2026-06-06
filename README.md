@@ -2,7 +2,7 @@
 
 A modern full-stack e-commerce web application built with Next.js, featuring product browsing, shopping cart, Stripe payments, order management, and an AI-powered chatbot.
 
-![Technest E-commerce](https://img.shields.io/badge/Next.js-14.2.35-black?style=for-the-badge&logo=next.js)
+![Technest E-commerce](https://img.shields.io/badge/Next.js-16.2.7-black?style=for-the-badge&logo=next.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)
 ![Stripe](https://img.shields.io/badge/Stripe-Payments-blue?style=for-the-badge&logo=stripe)
 
@@ -46,7 +46,8 @@ A modern full-stack e-commerce web application built with Next.js, featuring pro
 
 | Technology | Purpose |
 |------------|---------|
-| **Next.js 14** | React framework with SSR and API routes |
+| **Next.js 16** | React framework with SSR and API routes |
+| **React 19** | UI library |
 | **MongoDB/Mongoose** | Database for products, users, and orders |
 | **Stripe** | Payment processing |
 | **NextAuth.js** | Authentication |
