@@ -195,10 +195,6 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 - Protected admin routes
 - Secure NextAuth configuration
 
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
