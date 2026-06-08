@@ -1,0 +1,6 @@
+tmp/
+vendor/
+*.exe
+*.test
+*.out
+.env

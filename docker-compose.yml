@@ -1,0 +1,99 @@
+# ============================================================================
+# TechNest E-Commerce — Docker Compose
+# Services: frontend (Next.js), backend (Go/Gin), postgres, redis
+# ============================================================================
+
+services:
+  # ── PostgreSQL Database ──
+  postgres:
+    image: postgres:16-alpine
+    container_name: technest-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-technest}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-technest_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-technest_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-technest} -d ${POSTGRES_DB:-technest_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis Cache ──
+  redis:
+    image: redis:7-alpine
+    container_name: technest-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Go Backend API ──
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: technest-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    environment:
+      BACKEND_PORT: "8080"
+      # Database
+      DATABASE_URL: "host=postgres user=${POSTGRES_USER:-technest} password=${POSTGRES_PASSWORD:-technest_pass} dbname=${POSTGRES_DB:-technest_db} port=5432 sslmode=disable"
+      # Redis
+      REDIS_URL: "redis://redis:6379"
+      # Stripe
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      # Auth
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-admin@technest.local}
+      # OpenRouter (AI chatbot)
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openrouter/free}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Next.js Frontend ──
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: "http://localhost:${BACKEND_PORT:-8080}"
+    container_name: technest-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      # Points browser-side fetch calls to the Go backend (via host network)
+      NEXT_PUBLIC_API_URL: "http://localhost:${BACKEND_PORT:-8080}"
+      # Points server-side (SSR) fetch calls to the backend container
+      INTERNAL_API_URL: "http://backend:8080"
+      # NextAuth
+      NEXTAUTH_URL: "http://localhost:${FRONTEND_PORT:-3000}"
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      # Stripe (public key for client)
+      NEXT_PUBLIC_STRIPE_KEY: ${STRIPE_PUBLIC_KEY}
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
+    driver: local
+  redis_data:
+    driver: local

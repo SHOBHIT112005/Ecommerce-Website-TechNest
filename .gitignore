@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/frontend/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -11,6 +12,7 @@
 
 # next.js
 /.next/
+/frontend/.next/
 /out/
 
 # production
@@ -36,7 +38,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#agentic ai info
-*.claude
+# agentic ai info
+.claude
 AGENTS.md
 AI_CONTEXT.md
+
+# Docker
+docker-compose.override.yml
+
+# Go backend
+/backend/tmp/
+/backend/vendor/
+/backend/technest-backend
+/backend/technest-backend.exe
+
