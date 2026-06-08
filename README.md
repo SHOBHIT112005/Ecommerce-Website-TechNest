@@ -267,6 +267,7 @@ docker compose down             # Stop all services
 docker compose logs -f          # Tail all logs
 docker compose logs backend     # Tail backend logs only
 docker compose exec postgres psql -U technest -d technest_db  # Open psql shell
+```
 
 ---
 
