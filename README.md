@@ -271,18 +271,6 @@ docker compose exec postgres psql -U technest -d technest_db  # Open psql shell
 
 ---
 
-## 🛣️ Migration Roadmap
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| 1 | Repository restructuring + Docker infrastructure | ✅ Complete |
-| 2 | Database migration (MongoDB → PostgreSQL/GORM) | ✅ Complete |
-| 3 | Go backend API + Redis cart implementation | ✅ Complete |
-| 4 | Frontend TypeScript conversion | ✅ Complete |
-| 5 | Frontend state (Redux Toolkit) + Go API integration | ✅ Complete |
-
----
-
 ## 🔒 Security
 
 - Rate limiting on all API endpoints
